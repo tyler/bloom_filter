@@ -9,14 +9,14 @@ I suck at explaining things.  Wikipedia doesn't.  http://wikipedia.org/wiki/Bloo
 
 But in short a Bloom filter is a probabilistic data structure which is used to test for membership in a set.  False positives can happen, but false negatives can not.  The exact error rate of a Bloom filter can be tuned by changing the size of it.
 
-A Bloom filter is really just a bitmap of some size.  When you insert a given key into it, it hashes that key with some number of hash functions, and uses the result of those hash functions to set bits in the bitmap.  Retrieval obviously works in the same way, run the N hash functions and see if the bitmaps are set.
+A Bloom filter is really just a bitmap of some size.  When you insert a given key into it, it hashes that key with some number of hash functions, and uses the result of those hash functions to set bits in the bitmap.  Retrieval obviously works in the same way, run the N hash functions and see if the bits are set.
 
 
 h2. Why would I use a Bloom filter?
 
 They're extremely compact and quite fast.  The size of a Bloom filter is dependent upon the number of keys you'll be inserting into it and the acceptable error rate.  The smaller the size of the bloom filter, the higher the error rate.
 
-So, one idea is that you could use a Bloom filter as a pre-filter for database calls.  Before requesting a particular id from the database, you could query the Bloom filter.  If it returns true for the id, you can query the database for the data.  If it returns false, you don't.  Since false positives cannot happen, you'll never miss querying the database when you should.  However, you may (at a particular error rate) query the database when you don't necessarily need to.  But, as before, this can be tuned according to your needs.
+So, one idea is that you could use a Bloom filter as a pre-filter for database calls.  Before requesting a particular id from the database, you could query the Bloom filter.  If it returns true for the id, you can query the database for the data.  If it returns false, you don't.  Since false negatives cannot happen, you'll never miss querying the database when you should.  However, you may (at a particular error rate) query the database when you don't necessarily need to.  But, as before, this can be tuned according to your needs.
 
 
 h2. How do I use a Bloom filter?
