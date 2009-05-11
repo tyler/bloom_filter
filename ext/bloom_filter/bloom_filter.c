@@ -39,10 +39,22 @@ static VALUE rb_bloom_get(VALUE self, VALUE key) {
 	return bloom_get(filter, &hash_key, sizeof(int)) ? Qtrue : Qnil;
 }
 
+static VALUE rb_bloom_filter_size(VALUE self) {
+	Bloom *filter = get_bloom(self);
+	return INT2FIX(filter->bitset_size);
+}
+
+static VALUE rb_bloom_hash_count(VALUE self) {
+	Bloom *filter = get_bloom(self);
+	return INT2FIX(filter->hash_count);
+}
+
 void Init_bloom_filter() {
     cBloomFilter = rb_define_class("BloomFilter", rb_cObject);
     rb_define_alloc_func(cBloomFilter, rb_bloom_alloc);
 	rb_define_method(cBloomFilter, "initialize", rb_bloom_initialize, 2);
     rb_define_method(cBloomFilter, "get", rb_bloom_get, 1);
     rb_define_method(cBloomFilter, "set", rb_bloom_set, 1);
+    rb_define_method(cBloomFilter, "filter_size", rb_bloom_filter_size, 0);
+    rb_define_method(cBloomFilter, "hash_count", rb_bloom_hash_count, 0);
 }

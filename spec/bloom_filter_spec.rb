@@ -49,4 +49,24 @@ describe BloomFilter do
       @filter.get(nil).should be_true
     end
   end
+
+  describe :filter_size do
+    it 'returns the size of the bitset used in the filter' do
+      f = BloomFilter.new(1024,3)
+      f.filter_size.should == 1024
+
+      f = BloomFilter.new(10,3)
+      f.filter_size.should == 10
+    end
+  end
+
+  describe :hash_count do
+    it 'returns the number of hash functions used in the filter' do
+      f = BloomFilter.new(1024,3)
+      f.hash_count.should == 3
+
+      f = BloomFilter.new(1024,10)
+      f.hash_count.should == 10
+    end
+  end
 end
