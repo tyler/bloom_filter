@@ -46,9 +46,17 @@ Bloom *bloom_new(int bitset_size, int hash_count) {
 	return filter;
 }
 
+int bloom_size_for_error(double error, int key_count) {
+	return ceil((key_count * log(error)) / log(1.0 / (pow(2.0, log(2.0)))));
+}
+
+int bloom_ideal_hash_count(int size, int key_count) {
+	return round(log(2.0) * size / key_count);
+}
+
 Bloom *bloom_for_error_and_keys(double error, int key_count) {
-	int size = ceil((key_count * log(error)) / log(1.0 / (pow(2.0, log(2.0)))));
-	int hashes = round(log(2.0) * size / key_count);
+	int size = bloom_size_for_error(error, key_count);
+	int hashes = bloom_ideal_hash_count(size, key_count);
 	return bloom_alloc(size, hashes);
 }
 

@@ -69,4 +69,18 @@ describe BloomFilter do
       f.hash_count.should == 10
     end
   end
+
+  describe :for_error_rate do
+    it 'returns a filter of the proper size' do
+      BloomFilter.for_error_rate(0.05,100).filter_size.should == 624
+      BloomFilter.for_error_rate(0.10,100).filter_size.should == 480
+      BloomFilter.for_error_rate(0.10,50).filter_size.should == 240
+    end
+
+    it 'returns a filter with the correct hash count' do
+      BloomFilter.for_error_rate(0.1,1000).hash_count.should == 3
+      BloomFilter.for_error_rate(0.01,1000).hash_count.should == 7
+      BloomFilter.for_error_rate(0.001,1000).hash_count.should == 10
+    end
+  end
 end

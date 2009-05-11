@@ -16,3 +16,5 @@ void bloom_free(Bloom *filter);
 void bloom_add(Bloom *filter, void *key, unsigned int key_size);
 int bloom_get(Bloom *filter, void *key, unsigned int key_size);
 unsigned int bloom_hash_jen(void *key, unsigned int length, unsigned int salt);
+int bloom_size_for_error(double error, int key_count);
+int bloom_ideal_hash_count(int size, int key_count);
