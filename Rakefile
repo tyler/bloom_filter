@@ -1,40 +1,26 @@
 require 'rake'
-require 'rake/testtask'
-require 'rake/rdoctask'
-require 'rcov/rcovtask'
+require 'spec/rake/spectask'
 
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
     s.name = "bloom_filter"
-    s.summary = "TODO"
+    s.summary = 'Fast Bloom filter in C and Ruby.'
     s.email = "tyler@scribd.com"
     s.homepage = "http://github.com/tyler/bloom_filter"
-    s.description = "TODO"
+    s.description = s.summary
     s.authors = ["Tyler McMullen"]
+    s.extensions = ['ext/bloom_filter/extconf.rb']
+    s.require_paths = ['ext','lib']
+    s.files = FileList["[A-Z]*.*", "{lib,spec,ext}/**/*"]
+    s.has_rdoc = false
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
 end
 
-Rake::TestTask.new do |t|
-  t.libs << 'lib'
-  t.pattern = 'test/**/*_test.rb'
-  t.verbose = false
+Spec::Rake::SpecTask.new do |t|
+  t.spec_files = 'spec/**/*_spec.rb'
 end
 
-Rake::RDocTask.new do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'bloom_filter'
-  rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
-
-Rcov::RcovTask.new do |t|
-  t.libs << 'test'
-  t.test_files = FileList['test/**/*_test.rb']
-  t.verbose = true
-end
-
-task :default => :rcov
+task :default => :spec
